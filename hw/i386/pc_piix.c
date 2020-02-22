@@ -549,7 +549,11 @@ static void pc_i440fx_8_2_machine_options(MachineClass *m)
 {
     pc_i440fx_machine_options(m);
     m->alias = "pc";
+#ifdef CONFIG_MICROVM_DEFAULT
+    m->is_default = false;
+#else
     m->is_default = true;
+#endif
 }
 
 DEFINE_I440FX_MACHINE(v8_2, "pc-i440fx-8.2", NULL,
