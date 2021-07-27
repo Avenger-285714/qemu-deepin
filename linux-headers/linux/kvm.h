@@ -338,6 +338,7 @@ struct kvm_run {
 		} mmio;
 		/* KVM_EXIT_HYPERCALL */
 		struct {
+#define KVM_HC_MAP_GPA_RANGE 12
 			__u64 nr;
 			__u64 args[6];
 			__u64 ret;
@@ -1188,6 +1189,8 @@ struct kvm_ppc_resize_hpt {
 #define KVM_CAP_COUNTER_OFFSET 227
 #define KVM_CAP_ARM_EAGER_SPLIT_CHUNK_SIZE 228
 #define KVM_CAP_ARM_SUPPORTED_BLOCK_SIZES 229
+
+#define KVM_EXIT_HYPERCALL_VALID_MASK (1 << KVM_HC_MAP_GPA_RANGE)
 
 #ifdef KVM_CAP_IRQ_ROUTING
 
