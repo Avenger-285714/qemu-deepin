@@ -396,6 +396,9 @@ ppc64_patch_handlers(void)
     uint32_t *dsi = (uint32_t *)0x300UL;
     uint32_t *isi = (uint32_t *)0x400UL;
 
+#pragma GCC diagnostic warning "-Warray-bounds"
+/* gcc-12 misreports array-bounds error in the following two assignments: */
+
     // Patch the first DSI handler instruction to: ba 0x2000
     *dsi = 0x48002002;
 
