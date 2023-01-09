@@ -387,6 +387,16 @@ int kvm_arm_set_irq(int cpu, int irqtype, int irq, int level);
   */
  int kvm_arm_rme_vm_type(MachineState *ms);
 
+ /**
+ * kvm_arm_rme_vcpu_init
+ * @cs: the CPU
+ *
+ * If the user requested a Realm, setup the given vCPU accordingly. Realm vCPUs
+ * behave a little differently, for example most of their register state is
+ * hidden from the host.
+ */
+int kvm_arm_rme_vcpu_init(CPUState *cs);
+
 #else
 
 /*
@@ -472,6 +482,11 @@ static inline int kvm_arm_rme_init(MachineState *ms)
 }
 
 static inline int kvm_arm_rme_vm_type(MachineState *ms)
+{
+    g_assert_not_reached();
+}
+
+static inline int kvm_arm_rme_vcpu_init(CPUState *cs)
 {
     g_assert_not_reached();
 }
