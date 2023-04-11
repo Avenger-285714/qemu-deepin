@@ -3,3 +3,6 @@ config I386
 
 config X86_64
     bool
+
+config X32
+    bool
