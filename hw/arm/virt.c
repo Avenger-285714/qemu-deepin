@@ -1729,6 +1729,11 @@ void virt_machine_done(Notifier *notifier, void *data)
         exit(1);
     }
 
+    if (vms->event_log) {
+        object_property_set_uint(vms->event_log, "load-addr",
+                                 vms->bootinfo.log_paddr, &error_fatal);
+    }
+
     fw_cfg_add_extra_pci_roots(vms->bus, vms->fw_cfg);
 
     virt_acpi_setup(vms);
@@ -2069,6 +2074,21 @@ static void virt_cpu_post_init(VirtMachineState *vms, MemoryRegion *sysmem)
     }
 }
 
+static void create_measurement_log(VirtMachineState *vms)
+{
+    Error *err = NULL;
+
+    vms->event_log = kvm_arm_rme_get_measurement_log();
+    if (vms->event_log == NULL) {
+        return;
+    }
+    vms->bootinfo.log_size = object_property_get_uint(vms->event_log,
+                                                      "max-size", &err);
+    if (err != NULL) {
+        error_report_err(err);
+    }
+}
+
 static void machvirt_init(MachineState *machine)
 {
     VirtMachineState *vms = VIRT_MACHINE(machine);
@@ -2374,6 +2394,8 @@ static void machvirt_init(MachineState *machine)
                                vms->fw_cfg, OBJECT(vms));
     }
 
+    create_measurement_log(vms);
+    
     vms->bootinfo.ram_size = machine->ram_size;
     vms->bootinfo.board_id = -1;
     vms->bootinfo.loader_start = vms->memmap[VIRT_MEM].base;
