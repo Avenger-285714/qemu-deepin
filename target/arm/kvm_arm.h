@@ -410,6 +410,16 @@ int kvm_arm_rme_vcpu_init(CPUState *cs);
  */
 void kvm_arm_rme_init_guest_ram(hwaddr base, size_t size);
 
+/**
+ * kvm_arm_rme_get_measurement_log
+ *
+ * Obtain the measurement log object if enabled, in order to get its size and
+ * set its base address.
+ *
+ * Returns NULL if measurement log is disabled.
+ */
+Object *kvm_arm_rme_get_measurement_log(void);
+
 #else
 
 /*
@@ -438,6 +448,11 @@ static inline bool kvm_arm_steal_time_supported(void)
 
 static inline void kvm_arm_rme_init_guest_ram(hwaddr base, size_t size)
 {
+}
+
+static inline Object *kvm_arm_rme_get_measurement_log(void)
+{
+    return NULL;
 }
 
 /*
