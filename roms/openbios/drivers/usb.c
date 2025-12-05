@@ -31,6 +31,8 @@
  * SUCH DAMAGE.
  */
 
+#pragma GCC diagnostic warning "-Warray-bounds"
+
 #include "config.h"
 #include "drivers/usb.h"
 #include "usb.h"
